@@ -13,6 +13,7 @@ class LoginScreen extends StatefulWidget {
   static String id = "LoginScreen";
   static String name = null;
 
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -118,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             context: context,
                             titleTextColor: Colors.redAccent,
                             messageText:
-                                "Please check the age or name entered is incorrect",
+                                "Please check if the name entered is correct",
                             buttonText: "Okay",
                           );
                         }

@@ -11,7 +11,7 @@ import 'package:ruhakids/Screens/MobileVerification.dart';
 import 'package:http/http.dart' as http;
 import 'package:ruhakids/Screens/PrimaryLanguage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:io' show Platform;
 class RegisterationScreen extends StatefulWidget {
   @override
   static String id = "RegisterationScreen";
@@ -22,6 +22,7 @@ class RegisterationScreen extends StatefulWidget {
   static String mobileNumber = null;
   static String session = null;
   static bool visitedRegisterationScreen;
+  static String platform;
 
   static var result;
 
@@ -30,7 +31,17 @@ class RegisterationScreen extends StatefulWidget {
 }
 
 class _RegisterationScreen extends State<RegisterationScreen> {
-  void init() {
+  void initState() {
+    if (Platform.isAndroid) {
+      setState(() {
+        RegisterationScreen.platform="a";
+      });
+    } else if (Platform.isIOS) {
+      setState(() {
+        RegisterationScreen.platform="i";
+      });
+
+    }
     super.initState();
   }
 
@@ -269,6 +280,7 @@ class _RegisterationScreen extends State<RegisterationScreen> {
     var url = "https://kidsapp.ruha.co.in/flutterRegisterKid.php";
     var data = {
       'name': RegisterationScreen.childName,
+      'platform':RegisterationScreen.platform,
     };
     var response = await http.post(url, body: json.encode(data));
     var message = jsonDecode(response.body);
@@ -276,14 +288,12 @@ class _RegisterationScreen extends State<RegisterationScreen> {
     setState(() {
       RegisterationScreen.session = message;
     });
-    print("From sendtoDatabase: $message");
   }
 
   void getbasicInfo() async {
     SharedPreferences loginPrefs = await SharedPreferences.getInstance();
     setState(() {
       RegisterationScreen.childName = loginPrefs.get('name');
-      RegisterationScreen.childAge = loginPrefs.get('age');
     });
   }
 
